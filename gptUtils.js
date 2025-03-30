@@ -8,6 +8,21 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+export const makeImageRequest = async (prompt) => {
+  const response = await openai.images.generate ({
+    model: "dall-e-2",
+    prompt,
+    n: 1,
+    size: "256x256",
+  })
+
+  if(response.data) {
+    return response.data;
+  }
+
+  throw new Error("응답이 지원되지 않는 형식입니다.");
+}
+
 export const makeChatRequest = async (messages, chatOptions) => {  
   const response = await openai.chat.completions.create({
     ...chatOptions,
